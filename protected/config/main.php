@@ -8,6 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Web Application',
+	'theme' => 'nz',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -39,16 +40,19 @@ return array(
 		),
 
 		// uncomment the following to enable URLs in path-format
-		/*
+
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
+			    'disk/producer/<title:[0-9a-zA-Zа-яА-Я_\-]+>' => 'disk/producer',
+                'disk/details/<producerTitle:[0-9a-zA-Zа-яА-Я_\-]+>/<diskName:[0-9a-zA-Zа-яА-Я_\-]+>' => 'disk/details',
+
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-		*/
+
 
 		// database settings are configured in database.php
 		'db'=>require(dirname(__FILE__).'/database.php'),
