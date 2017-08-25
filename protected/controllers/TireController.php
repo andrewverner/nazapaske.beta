@@ -1,10 +1,10 @@
 <?php
 
-class DiskController extends Controller
+class TireController extends Controller
 {
     public function actionIndex()
     {
-        $producers = DiskProducer::model()->findAll(['order' => 'title ASC']);
+        $producers = TireProducer::model()->findAll(['order' => 'title ASC']);
         $this->render('index', [
             'producers' => $producers,
             'filters' => [
@@ -28,13 +28,6 @@ class DiskController extends Controller
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('published = :published AND producer = :producer');
-
-        foreach (Disk::getFilterParams() as $param) {
-            if (isset($_GET[$param])) {
-                $criteria->addInCondition($param, $_GET[$param]);
-            }
-        }
-
         $criteria->order = 'name ASC';
         $criteria->params = [
             ':published' => 1,

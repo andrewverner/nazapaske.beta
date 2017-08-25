@@ -1,0 +1,15 @@
+.top-nav {
+    background-color: #ccc;
+}
+ul.top-menu {
+    padding: 0;
+    margin: 0;
+    list-style: none inside;
+}
+ul.top-menu li {
+    display: inline-block;
+}
+ul.top-menu li a {
+    display: block;
+    padding: 5px 10px;
+}

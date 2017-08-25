@@ -8,7 +8,7 @@ return array(
 	'connectionString' => 'mysql:host=localhost;dbname=nz',
 	'emulatePrepare' => true,
 	'username' => 'root',
-	'password' => '1',
+	'password' => 'root',
 	'charset' => 'utf8',
 
 );

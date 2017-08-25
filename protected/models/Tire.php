@@ -18,9 +18,16 @@
  * @property integer $producer
  * @property integer $priority
  * @property integer $rest
+ * @property integer $published
  */
 class Tire extends CActiveRecord
 {
+    const PARAM_WIDTH = 'width';
+    const PARAM_HEIGHT = 'height';
+    const PARAM_DIAMETER = 'diameter';
+    const PARAM_SEASON = 'season';
+    const PARAM_STUDDING = 'studding';
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -38,13 +45,13 @@ class Tire extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('width, diameter, height, price, name, producer', 'required'),
-			array('season, price, load_index, studding, img, producer, priority, rest', 'numerical', 'integerOnly'=>true),
+			array('season, price, load_index, studding, img, producer, priority, rest, published', 'numerical', 'integerOnly'=>true),
 			array('width, diameter, height', 'numerical'),
 			array('name', 'length', 'max'=>255),
 			array('speed_index', 'length', 'max'=>2),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, width, diameter, height, season, price, name, speed_index, load_index, studding, img, producer, priority, rest', 'safe', 'on'=>'search'),
+			array('id, width, diameter, height, season, price, name, speed_index, load_index, studding, img, producer, priority, rest, published', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,6 +86,7 @@ class Tire extends CActiveRecord
 			'producer' => 'Producer',
 			'priority' => 'Priority',
 			'rest' => 'Rest',
+			'published' => 'Published',
 		);
 	}
 
@@ -114,6 +122,7 @@ class Tire extends CActiveRecord
 		$criteria->compare('producer',$this->producer);
 		$criteria->compare('priority',$this->priority);
 		$criteria->compare('rest',$this->rest);
+		$criteria->compare('published',$this->published);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -130,4 +139,34 @@ class Tire extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    public static function getParamValues($param, array $conditions = [], $values = true)
+    {
+        $cr = new CDbCriteria();
+        $cr->distinct = true;
+        $cr->select = $param;
+        $cr->order = "$param ASC";
+
+        if ($conditions) {
+            $cr->addColumnCondition($conditions);
+        }
+
+        $models = self::model()->findAll($cr);
+
+        if (!$values) {
+            return $models;
+        }
+
+        $data = [];
+        foreach ($models as $model) {
+            $data[$model->{$param}] = $model->{$param};
+        }
+
+        return $data;
+    }
+
+    public static function getFilterParams()
+    {
+        return [self::PARAM_WIDTH, self::PARAM_HEIGHT, self::PARAM_DIAMETER, self::PARAM_SEASON, self::PARAM_STUDDING];
+    }
 }
