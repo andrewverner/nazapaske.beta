@@ -1,20 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "disk_producer".
+ * This is the model class for table "image".
  *
- * The followings are the available columns in table 'disk_producer':
+ * The followings are the available columns in table 'image':
  * @property integer $id
- * @property string $title
+ * @property string $name
+ * @property string $path
+ * @property integer $size
+ * @property string $uploaded
+ * @property string $updated
  */
-class DiskProducer extends CActiveRecord
+class Image extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'disk_producer';
+		return 'image';
 	}
 
 	/**
@@ -25,11 +29,13 @@ class DiskProducer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
-			array('title', 'length', 'max'=>45),
+			array('name, path, size, uploaded', 'required'),
+			array('size', 'numerical', 'integerOnly'=>true),
+			array('name, path', 'length', 'max'=>45),
+			array('updated', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title', 'safe', 'on'=>'search'),
+			array('id, name, path, size, uploaded, updated', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,7 +57,11 @@ class DiskProducer extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'title' => 'Title',
+			'name' => 'Name',
+			'path' => 'Path',
+			'size' => 'Size',
+			'uploaded' => 'Uploaded',
+			'updated' => 'Updated',
 		);
 	}
 
@@ -74,7 +84,11 @@ class DiskProducer extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('title',$this->title,true);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('path',$this->path,true);
+		$criteria->compare('size',$this->size);
+		$criteria->compare('uploaded',$this->uploaded,true);
+		$criteria->compare('updated',$this->updated,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -85,15 +99,10 @@ class DiskProducer extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return DiskProducer the static model class
+	 * @return Image the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
-	public function getTitleForUrl()
-    {
-        return str_replace(' ', '_', $this->title);
-    }
 }

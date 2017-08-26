@@ -43,6 +43,7 @@ return array(
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
+			'showScriptName' => false,
 			'rules'=>array(
 			    'disk/producer/<title:[0-9a-zA-Zа-яА-Я_\-]+>' => 'disk/producer',
                 'disk/details/<producerTitle:[0-9a-zA-Zа-яА-Я_\-]+>/<diskName:[0-9a-zA-Zа-яА-Я_\-]+>' => 'disk/details',
@@ -85,5 +86,6 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+        'noPhotoImage' => 'http://www.exclusive-tyre.ru/disks-moto-metal/auto-disk-mo960blk-mash.jpg',
 	),
 );

@@ -75,6 +75,7 @@ class DiskController extends Controller
         }
 
         $diskName = str_replace('_', ' ', $diskName);
+
         $disks = Disk::model()->findAllByAttributes([
             'producer' => $producer->id,
             'name' => $diskName
@@ -86,7 +87,16 @@ class DiskController extends Controller
 
         $this->render('details', [
             'producer' => $producer,
-            'disks' => $disks
+            'disks' => $disks,
+            'disk' => reset($disks),
+            'filters' => [
+                Disk::PARAM_WIDTH => Disk::getParamValues(Disk::PARAM_WIDTH, ['producer' => $producer->id]),
+                Disk::PARAM_DIAMETER => Disk::getParamValues(Disk::PARAM_DIAMETER, ['producer' => $producer->id]),
+                Disk::PARAM_PCD => Disk::getParamValues(Disk::PARAM_PCD, ['producer' => $producer->id]),
+                Disk::PARAM_PCD2 => Disk::getParamValues(Disk::PARAM_PCD2, ['producer' => $producer->id]),
+                Disk::PARAM_ET => Disk::getParamValues(Disk::PARAM_ET, ['producer' => $producer->id])
+            ],
+            'filterParams' => Disk::getFilterParams()
         ]);
     }
 }

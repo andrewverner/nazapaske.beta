@@ -168,8 +168,47 @@ class Disk extends CActiveRecord
         return $data;
     }
 
+    public function getMinimalPrice()
+    {
+        $cr = new CDbCriteria();
+        $cr->select = 'MIN(price) as price';
+        $cr->condition = 'producer = :producer AND name = :name';
+        $cr->params = [
+            ':producer' => $this->producer,
+            ':name' => $this->name
+        ];
+
+        $model = self::model()->find($cr);
+        return $model->price;
+    }
+
     public static function getFilterParams()
     {
         return [self::PARAM_WIDTH, self::PARAM_DIAMETER, self::PARAM_PCD, self::PARAM_PCD2, self::PARAM_ET];
+    }
+
+    public function getImage()
+    {
+        if (!$this->img) {
+            return Yii::app()->params['noPhotoImage'];
+        }
+
+        $model = Image::model()->findByPk($this->img);
+
+        if (!$model) {
+            return Yii::app()->params['noPhotoImage'];
+        }
+
+        return "{$model->path}/{$model->name}";
+    }
+
+    public function getNameForUrl()
+    {
+        return str_replace(' ', '_', $this->name);
+    }
+
+    public function getSize()
+    {
+        return "{$this->width}*{$this->diameter}";
     }
 }
